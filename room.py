@@ -1,3 +1,4 @@
+from item import item
 """
  * Class Room - a room in an adventure game.
  *
@@ -28,7 +29,41 @@ class Room():
         """
         self.description = description
         self.exits = {}
+        self.items = []
+        
+    def set_item(self, name, description,weight):
+        """set_position" sets the location of an item in a room.
 
+        Parameters
+        ----------
+        name: String
+            name of the item
+        
+        description: String
+            description of  the item
+        
+        weight: float
+            weight of the item
+
+        """
+        name = item(name, description, weight)
+        self.items.append(name)
+        
+        
+    def set_item_position(self,name,position):
+        """set_position" sets the location of an item in a room.
+
+        Parameters
+        ----------
+        name: String
+            name of the item
+        
+        position: String
+            position of the item in the room
+        """
+        for i in range(len(self.items)):
+            item.set_position(self.items[i],name,position)
+        
     def set_exit(self, direction, neighbour):
         """ Define an exit from this room.
 
@@ -54,7 +89,30 @@ class Room():
         
         Returns A long description of this room
         """
-        return "You are " + self.description + ".\n" + self.get_exit_string()
+        
+        if len(self.items) == 0:
+            
+            return "You are " + self.description + ".\n" + self.get_exit_string()
+        
+        elif len(self.items) == 1:
+            
+            item_defination = item.get_item_info(self.items[0])
+            return "You are " + self.description + ".\nThere is a " + item_defination + ".\n" + self.get_exit_string()
+        
+        else :
+            first_string = "You are " + self.description
+            item_defination = ""
+            
+            for i in range(len(self.items)):
+                
+                if self.items[i] == self.items[-1]:
+                    item_defination += "a " + item.get_item_info(self.items[i])
+                elif len(self.items) == 2 :
+                    item_defination += "a " + item.get_item_info(self.items[i]) + " and "
+                else :
+                    item_defination += "a " + item.get_item_info(self.items[i]) + ", "
+                
+            return first_string + ".\nThere is " + item_defination + ".\n" + self.get_exit_string()
 
     def get_exit_string(self):
         """ Return a string describing the room's exits, for example
@@ -73,6 +131,7 @@ class Room():
      *     direction The exit's direction.
      *     Returns The room in the given direction.
     """
+    
     def get_exit(self, direction):
         """ Return the room that is reached if we go from this room in direction
         "direction". If there is no room in that direction, return None.
@@ -88,4 +147,3 @@ class Room():
             return self.exits[direction]
         else:
             return None        # None is a special Python value that says the variable contains nothing
-
