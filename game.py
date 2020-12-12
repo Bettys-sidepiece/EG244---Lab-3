@@ -39,7 +39,13 @@ class Game():
         outside.set_exit("east", theater)
         outside.set_exit("south", lab)
         outside.set_exit("west", pub)
-
+        
+        #initialise the items in the room
+        outside.set_item("keycard","unlocks door in the computing lab ",0.2)
+        #sets the position of the item
+        outside.set_item_position("keycard", "on a grass patch")
+        
+        
         theater.set_exit("west", outside)
 
         pub.set_exit("east", outside)
