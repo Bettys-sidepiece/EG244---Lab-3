@@ -17,6 +17,7 @@ Idea(1):  The Delivery
 * To win the game complete the delivery 
 
 Rooms
+---------
 
  Reception 
  
@@ -89,6 +90,7 @@ Rooms
 	Items:
 
 Items
+--------
 
 Silver chip : Key 
 
@@ -107,7 +109,8 @@ Delivery Form : Key
 Experimental Serum U - 56 : Consumable;
 
 	Description : Glass container with neon blue liquid
-	Effect : 1 in 50 chance of teleporting the player to Mr.Samsa’s office to deliver	Location :  Teleportation Lab; 
+	Effect : 1 in 50 chance of teleporting the player to Mr.Samsa’s office to deliver	
+	Location :  Teleportation Lab; 
 	Weight : 0.5
 
 Experimental Serum U - 69 : Consumable;
@@ -155,6 +158,7 @@ Package : Key;
 
 
 Characters
+----------
 
 Receptionist  
 
