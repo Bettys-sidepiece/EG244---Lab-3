@@ -47,13 +47,14 @@ class Game():
         self.char_list = [] #Stores the existing characters in the game for interaction
         
         # Create all the charecters and antagonists    
-        self.receptionist = Character("receptionist","Works at the front dest of ridgeworks")
+        self.receptionist = Character("the receptionist","Works at the front dest of ridgeworks")
         self.char_list.append(self.receptionist)
         self.receptionist.set_current_room(self.reception_copy)
        
-        self.security = Character("officer","Deals with security in the building")
+        self.security = Character("officer.david","Deals with security in the building")
         self.char_list.append(self.security)
         self.security.set_current_room(self.security_copy)
+        self.security.add_item(self.chip)
         
         self.technician_1 = Character("mr.smith","lab technician")
         self.char_list.append(self.technician_1)
@@ -63,9 +64,11 @@ class Game():
          
         self.researcher_1 = Character("dr.hsu","researcher at RigdeWorks")
         self.char_list.append(self.researcher_1)
+        self.researcher_1.set_current_room(self.cafe_copy)
          
         self.technician_2 = Character("ms.chungu","lab technician")
         self.char_list.append(self.technician_2)
+        self.technician_2.set_current_room(self.cafe_copy)
          
         self.researcher_2 = Character("dr.solis","researcher at RigdeWorks")
         self.char_list.append(self.researcher_2)
@@ -75,10 +78,14 @@ class Game():
          
         self.clerk = Character("mr.bore","deals with build vistors")
         self.char_list.append(self.clerk)
+        self.clerk.set_current_room(self.arrivals_copy)
+        self.clerk.add_item(self.form)
        
         self.visitor_1 = Character("jane","looking for employment")
+        self.visitor_1.set_current_room(self.arrivals_copy)
         
         self.visitor_2 = Character("joe","looking for internship")
+        self.visitor_2.set_current_room(self.atrium_copy)
     
     def char_in_room(self):
         for person in self.char_list:
@@ -89,27 +96,40 @@ class Game():
         """ Create all the rooms and link their exits together. """
         #create the items
         keycard_1 = Key("keycard-B29","Property of Ridge-works (TRD division)",0.1)
-        keycard_1.set_id("1")
-        #keycard_2 = Key("keycard-R25","Property of Ridge-works (TRD division)",0.1)
-        #keycard_3 = Key("keycard-T06","Property of Ridge-works (Dr. Hsu)",0.1)
+        keycard_1.set_id("B29")
+        
+        keycard_2 = Key("keycard-R25","Property of Ridge-works (TRD division)",0.1)
+        keycard_1.set_id("J27")
+        
+        keycard_3 = Key("keycard-T06","Property of Ridge-works (Dr. Hsu)",0.1)
+        keycard_3.set_id("T07")
+        
         box = Item("box","----",6)
-        #chip = Item("silver chip","Security RFID Chip",0.05)
-        #serum_69 = Consumable("U-69","Red liquid in test-tube",0.7)
-        #serum_56 = Consumable("U-56","Blue liquid in test-tube",0.7)
-        #form = Key("Delivery Form","",0.01)
+        
+        self.chip = Key("chip","Security RFID Chip",0.05)
+        self.chip.set_id("37A")
+        
+        serum_69 = Consumable("U-69","Red liquid in test-tube",0.7)
+        serum_56 = Consumable("U-56","Blue liquid in test-tube",0.7)
+        
+        self.form = Key("document","",0.01)
+        self.form.set_id("25H")
+        
         self.package = Key("package","Addressed to,Mr.G Samsa at Rigid-Works, 917 Administration Ave, Arkansas.",2.5)
-        teleporter_ = teleport("teleporter","Portable teleporter, can be used to teleport anywhere in the building.\n Has a small LCD screen.",2.0)
+        self.package.set_id("T19")
+        
+        teleporter_ = teleport("teleporter","Portable teleporter, can be used to teleport anywhere in the building.\n Has a small LCD screen.",2.5)
         
         
         #create the rooms and place the items
-        reception = Room("in the reception")
-        reception.set_name("Reception")
+        reception = Room("in the front desk")
+        reception.set_name("front desk")
         reception.set_item(box)
         reception.set_item_position('box',"next to the front desk.")
         self.reception_copy = reception
         
         east_hallway = Room("in a east hallway")
-        east_hallway.set_name("east hallway")
+        east_hallway.set_name("e-hallway")
         
         arrivals = Room("in the arrivals")
         arrivals.set_name("arrivals")
@@ -117,36 +137,49 @@ class Game():
         
         atrium = Room("in the Atrium")
         atrium.set_name("atrium")
+        self.atrium_copy = atrium
         
         east_restroom = Room("in the arrivals restroom")
-        east_restroom.set_name("east restroom")
+        east_restroom.set_name("e-restroom")
         east_restroom.set_item(keycard_1)
-        east_restroom.set_item_position("blue keycard","on the restroom floor")
+        east_restroom.set_item_position("keycard-B29","on the restroom floor")
         
         security = Room("in the Security room")
         security.set_name("security")
         self.security_copy = security
         
         west_restroom = Room("in the main restroom")
-        west_restroom.set_name("west restroom")
+        west_restroom.set_name("w-restroom")
+        west_restroom.set_item(keycard_3)
+        west_restroom.set_item_position("keycard-T07","in one of the sinks.")
         
         west_hallway = Room("in the west hallway")
-        west_hallway.set_name("west hallway")
+        west_hallway.set_name("w-hallway")
+        west_hallway.set_item(box)
+        west_hallway.set_item_position("box","on the hallway floor.")
+        
         
         cafeteria = Room("in the cafeteria")
         cafeteria.set_name("cafeteria")
+        cafeteria.set_item(keycard_2)
+        cafeteria.set_item_position("keycard-R25","on the floor underneath a table.")
         self.cafe_copy = cafeteria
+        
         
         lab = Room("in the Teleportation RD Laboratory")
         lab.set_name("lab")
-        lab.set_id("1")
+        lab.set_item(serum_69)
+        lab.set_item_position("U-69","on the table next to the east exit")
+        lab.set_item(serum_56)
+        lab.set_item_position("U-56","on a shelf")
+        lab.set_id("T06")
         lab.restrict(1)
         
         storage = Room("in equipment storage")
         storage.set_name("storage")
         storage.set_item(teleporter_)
         storage.restrict(1)
-        storage.set_id("1")
+        storage.set_id("B29")
         
         marketing = Room("in the marketing offices")
         marketing.set_name("marketing")
@@ -155,6 +188,8 @@ class Game():
         office = Room("you are in Mr.Samsa's Office")
         office.set_name("office")
         office.restrict(1)
+        office.set_id("J27")
+        self.office_copy = office
         
         teleporter = Transport_Room("in a faulty experimental teleporter")
         
@@ -241,7 +276,6 @@ class Game():
         """ Main play routine.  Loops until end of play """
         self.player.set_capacity(5.0)
         self.player.add_item(self.package)
-        self.player.add_item(self.teleport_item)
         self.print_welcome()
         
         # Enter the main command loop.  Here we repeatedly read commands and
@@ -425,7 +459,6 @@ class Game():
                     if item == items.get_name() and self.player.has_space(items.weight) != False:
                     
                         #The selected item is added to the player's inventory and  removed from the current room
-                    
                         self.player.add_item(items)
                         self.current_room.pop_item(items)
                         self.refresh()
@@ -460,7 +493,6 @@ class Game():
                 if item == items.get_name():
                     
                     # The selected item is removed from the inventory and placed in the current room
-                    
                     self.player.pop_item(items)
                     self.current_room.set_item(items)
                     self.refresh()
@@ -478,6 +510,7 @@ class Game():
                 self.history.pop(-1)
                 return
             
+            # Try and open the portable teleporter
             if command.get_second_word() == "teleporter":
                 for item in self.player.inventory:
                     if item.name == "teleporter":
@@ -486,61 +519,73 @@ class Game():
                             self.current_room = item.next_room
                             self.history.pop(-1)
                             self.refresh()
-            
                         else:
                             print("ERROR: INVALID COORDINATES RECIEVED.\nSYSTEM FAILURE. SEQUENCE JHB-2910 ABORTED.")
                             self.history.pop(-1)
                             self.refresh()
-                        
+                    else:
+                        self.history.pop(-1)
+                        print("\n\nYou dont have a teleporter.") 
+                        self.refresh() 
+
             # Try and open inventory            
             elif command.get_second_word() == "inventory":
                 if len(self.player.inventory) == 0:
                     self.refresh()
                     print("\nThere are no items in your inventory.")
-                    
-            
+                
                 else:
-                    
+                    item = None
                     print("\n" * 20)
                     self.inventory_options()
                     entry = input("> ")
+                    split_str = entry.split(" ")
                     
                     while exit_inventory == False:
-                        for item in self.player.inventory:
-                            if entry == "exit":
-                                exit_inventory = True
+                        for i in self.player.inventory:
+                            if i.name  == split_str[1]:
+                                item = i
+                            elif count == len(self.player.inventory):
+                                print("I dont know what you mean.")
+                                count = 0
+                            count += 1
+                        
+                        if entry == "exit":
+                            exit_inventory = True
                                 
-                            elif entry == ("show " + item.name): #try and view an items details i.e weight, description and name
+                        elif entry == ("show " + item.name): #try and view an items details i.e weight, description and name
+                            print("\n" * 20)
+                            print(item.get_full_description())
+                            print("\n Actions: back | exit | drop item")
+                            entry = input("> ")
+                            if entry == "back": #This back command only affects the inventory menu 
                                 print("\n" * 20)
-                                print(item.get_full_description())
-                                print("\n Actions: back | exit | drop item")
-                                entry = input("> ")
-                                if entry == "back": #This back command only affects the inventory menu 
-                                    print("\n" * 20)
-                                    self.inventory_options()
-                                    entry = input("> ")
-                                
-                            elif entry == ("drop " + item.name): #This allows the player to drop and item from the inventory menu
-                                self.player.pop_item(item)
-                                self.current_room.set_item(item)
-                                if len(self.player.inventory) == 0:
-                                    exit_inventory = True
-                                else:
-                                    print("\n Actions: show item | exit | drop item")
-                                    entry = input("> ")
-                                
-                            else: #error message
-                                print("\n"*20+"I dont know what you mean\n")
                                 self.inventory_options()
                                 entry = input("> ")
+                                
+                        elif entry == ("drop " + item.name): #This allows the player to drop and item from the inventory menu
+                            self.player.pop_item(item)
+                            self.current_room.set_item(item)
+                            if len(self.player.inventory) == 0:
+                                exit_inventory = True
+                                
+                            else:
+                                print("\n Actions: show item | exit | drop item")
+                                entry = input("> ")
+                                
+                        else: #error message
+                            print("\n"*20+"I dont know what you mean\n")
+                            self.inventory_options()
+                            entry = input("> ")
                                 
                     self.history.pop(-1)
                     print("\n"*10)
                     self.refresh()
             else:
                 print("I dont know what that means.")
-                self.refresh()
                 self.history.pop(-1)
+                self.refresh()
+                
                 
                 
         elif command.get_command_word() == "interact": #Allows the player to interact with room exits
@@ -580,11 +625,9 @@ class Game():
                                 self.refresh()
                                 self.history.pop(-1)
                         else:
-                            print("Please use a keycard!.")
-                                
+                            print("Please use a keycard!.")                
         else:
             print("I dont know what that means.")
-        
         
     """
      * Allows interactions with character in the room
@@ -632,7 +675,18 @@ class Game():
         print("\n Actions: show item | exit | drop item")
         
     def has_won(self):
-        None
+        # case 1
+        for item in self.receptionist.inventory:
+            if item.id == "T19":
+                return True
+            else:
+                return False
+        for item in self.office_copy.items:
+            if item.id == "T19":
+                return True
+            else:
+                return False
+                
     
     
     def quit(self, command):
