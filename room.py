@@ -478,6 +478,7 @@ class teleport(Item):
         else:
             return False
         
+        
     def get_rooms_string(self):
         string  = ""
         newline = 0
@@ -496,6 +497,7 @@ class teleport(Item):
                 newline =  0
                 
         return string
+        
         
     def print_menu(self):
         """print_rooms_list displays the possible rooms for teleportation"""
@@ -516,7 +518,7 @@ class teleport(Item):
                     rm = room
                     case = True
                     
-
+                    
             if entry == ("goto " + rm.rm_name) and case == True:
                 self.rm_name = rm.rm_name
                 self.teleport(rm)
@@ -536,7 +538,7 @@ class teleport(Item):
         
     def teleport(self,room):
         """
-            teleport sets  the room selected by the player as the next room
+            teleport sets the room selected by the player as the next room
             
             Parameters
             ----------
@@ -549,8 +551,7 @@ class teleport(Item):
             if room == rm:
                 self.next_room = room
             else:
-                print()
-        
+                print("")
         
         
 """
