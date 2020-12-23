@@ -8,7 +8,8 @@ class CommandWords():
         """ Constructor - initialise the command words """
         self.valid_commands = {
             "go", "quit", "help", "pick",
-            "drop", "back", "open", "give"
+            "drop", "back", "open", "give",
+            "interact"
         }
 
     def is_command(self, a_string):
