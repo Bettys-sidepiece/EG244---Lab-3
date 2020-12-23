@@ -2,6 +2,7 @@
 EG244 -  Group project
 
 Idea(1):  The Delivery
+----------------------
 
 * You are a courier trying to deliver a package to a Mr.Samsa’s office at the Rigid-works building.
 
