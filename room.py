@@ -392,6 +392,7 @@ class Item():
         
         return self.name +  " " + self.position
     
+    
     def get_full_description(self):
         """This method retrieves the full description of an item """
      
@@ -422,6 +423,7 @@ class Key(Item):
         super().__init__(name,info,weight)
         self.id = ""
     
+    
     def set_id(self,lock):
         """ set_id, is meant to set the a unique identification string
             this string is compared to  the string each room has if it
@@ -448,10 +450,11 @@ class teleport(Item):
         in the game.
     """
     def __init__(self, name, info, weight):
-    
         super().__init__(name,info,weight)
         self.rooms = []
         self.next_room = None
+        self.rm_name = ""
+        
         
     def add_rooms(self, rooms):
         """
@@ -468,31 +471,69 @@ class teleport(Item):
         if rooms not in self.rooms: #checks if the room is already in the list
             self.rooms.append(rooms)
             
-    def print_rooms_list(self):
-        """print_rooms_list displays the possible rooms for teleportation"""
-        
-        rooms = ""
-        newline = 0
-        exit_menu = False
-        for room in self.rooms:
-            if newline < 3:
-                rooms += room.rm_name
-            else:
-                rooms += "\n"
-                newline = 0
-            while exit_menu == False:
-                print("goto room | exit")
-                entry = input("> ")
-                if entry == "goto" and room.rm_name:
-                    self.teleport(room)
-                elif entry == "exit":
-                    exit_menu = True
-                else:
-                    print("I dont know what you mean...")
-                    print(rooms+"\n")
-                    print("goto room | exit")
-                    entry = input("> ")
             
+    def can_teleport(self):  
+        if self.next_room.rm_name == self.rm_name:
+            return True
+        else:
+            return False
+        
+    def get_rooms_string(self):
+        string  = ""
+        newline = 0
+        
+        for room in self.rooms:
+            if newline < 2:
+                string += room.rm_name.title() + " | "
+                newline += 1
+                    
+            elif newline == 2:
+                string += room.rm_name.title() + "\n"*2
+                newline = 0
+                
+            elif room == self.rooms[-1]:
+                string += room.rm_name.title()
+                newline =  0
+                
+        return string
+        
+    def print_menu(self):
+        """print_rooms_list displays the possible rooms for teleportation"""
+        rm = None
+        case = False
+        exit_menu = False
+        while exit_menu == False:
+            print("\n"*10,"\n--------------------------------------------\n"
+                    ,self.get_rooms_string(),
+                  "\n-----------------------------------------------")
+            print("\ngoto room | exit")
+                
+            entry = input("> ")
+            split = entry.split(" ")
+            print(split)
+            for room in self.rooms:
+                if room.rm_name == split[1]:
+                    rm = room
+                    case = True
+                    
+
+            if entry == ("goto " + rm.rm_name) and case == True:
+                self.rm_name = rm.rm_name
+                self.teleport(rm)
+                exit_menu = True
+                break
+            elif entry == "exit":
+                exit_menu = True
+                break
+            else: 
+                print("\n"*10,"\n--------------------------------------------\n"
+                    ,self.get_rooms_string(),
+                  "\n-----------------------------------------------")
+                print("\ngoto room | exit")
+                print("\nI dont know what you mean...")
+                entry = input("> ")
+            
+        
     def teleport(self,room):
         """
             teleport sets  the room selected by the player as the next room
@@ -506,7 +547,7 @@ class teleport(Item):
         """
         for rm in self.rooms:
             if room == rm:
-                self.next_room = rm
+                self.next_room = room
             else:
                 print()
         
