@@ -1,8 +1,8 @@
 # EG244-Lab-3
 EG244 -  Group project
 
-Idea(1):  The Delivery
-----------------------
+The Delivery
+------------
 
 * You are a courier trying to deliver a package to a Mr.Samsa’s office at the Rigid-works building.
 
@@ -11,10 +11,8 @@ Idea(1):  The Delivery
 * You go through the atrium to get to the security room, here you’ll meet an officer that says you first have to, provide a filled delivery form, you have to goto Arrivals.
 
 * As you try an deliver,  you find out that the company is currently researching
-  Methods of teleportation, you find a faulty teleportation room that randomly teleports you to a room in the facility, to access it you need to be in the laboratory (There is a locked exit in the room, in)
-
-*
-
+  Methods of teleportation, you find a faulty teleportation room that randomly teleports you to a room in the facility, to access it you need to be in the  laboratory (There is a locked exit in the room, in)
+  
 * To win the game complete the delivery 
 
 Rooms
